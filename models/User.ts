@@ -5,7 +5,8 @@ import mongoose, {
   models,
   Schema,
 } from "mongoose";
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { GlobalErrorHandler } from "@/app/utils/globarErrorHandler";
 
 export interface UserInterface extends Document {

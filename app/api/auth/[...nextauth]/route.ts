@@ -14,7 +14,7 @@ import GoogleProvider from "next-auth/providers/google";
 //   password: string;
 // };
 
-const authOptions: NextAuthOptions = {
+export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     Credentials({

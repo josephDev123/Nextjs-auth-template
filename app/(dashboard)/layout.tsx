@@ -1,7 +1,7 @@
 import "../globals.css";
 import NextAuthSessionProvider from "../nextAuthSessionProvider";
-import LeftPanel from "./commonComponents/LeftPanel";
-import TopNavbar from "./commonComponents/TopNavbar";
+import LeftPanel from "./dashboard/commonComponents/LeftPanel";
+import TopNavbar from "./dashboard/commonComponents/TopNavbar";
 
 export const metadata = {
   title: "JoeFintech",
