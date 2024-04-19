@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { errorAlert } from "@/lib/Alerts";
 import { useRouter } from "next/navigation";
+import { FaSpinner } from "react-icons/fa6";
 
 export default function Login() {
   const [togglePassword, setTogglePassword] = useState(false);
@@ -20,7 +21,7 @@ export default function Login() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<loginInferredType>({ resolver: zodResolver(loginInputType) });
   const handleLogin: SubmitHandler<loginInferredType> = async (data) => {
     try {
@@ -89,6 +90,9 @@ export default function Login() {
             className="rounded-md p-2 w-full bg-darkGreen text-white"
           >
             Login
+            {isSubmitting && (
+              <FaSpinner className="animate-spin h-8 w-8 self-end" />
+            )}
           </button>
           <div className="flex justify-center text-gray-500">
             or signin with

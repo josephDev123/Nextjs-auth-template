@@ -1,18 +1,15 @@
-import { getServerSession } from "next-auth";
-import { getSession } from "next-auth/react";
-import { NextRequest, NextResponse } from "next/server";
-import { authOptions } from "./app/api/auth/[...nextauth]/route";
+import { withAuth } from "next-auth/middleware";
 
-export async function middleware(request: NextRequest) {
-  const userSession = await getServerSession(authOptions);
-  // const userSession = await getSession();
-  console.log(`from middleware: ${userSession?.user}`);
-
-  if (!userSession?.user && request.nextUrl.pathname.startsWith("/dashboard")) {
-    // return NextResponse.redirect(new URL("/", request.url));
-  }
-}
-
-export const config = {
-  matcher: ["/dashboard"],
-};
+export default withAuth(function middleware(req) {}, {
+  callbacks: {
+    authorized: ({ req, token }) => {
+      if (
+        req.nextUrl.pathname.startsWith(`/dashboard`) ||
+        req.nextUrl.pathname.startsWith(`/dashboard/`)
+      ) {
+        if (!token) return false;
+      }
+      return true;
+    },
+  },
+});

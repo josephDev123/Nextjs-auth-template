@@ -4,7 +4,7 @@ import { signIn } from "next-auth/react";
 import { FormEvent, useState } from "react";
 import { AiOutlineEye } from "react-icons/ai";
 import { FcGoogle } from "react-icons/fc";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { registerType } from "../Types/registerType";
 import { z } from "zod";
@@ -28,12 +28,30 @@ export default function Register() {
   const handleRegister: SubmitHandler<RegType> = async (data) => {
     try {
       const result = await registerAction(data);
-      if (result.type === "error" && result.operational) {
-        return errorAlert(result.msg);
-      }
-      redirect.push("/login");
     } catch (error: any) {
-      return errorAlert("something went wrong");
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        const responseError = error.response.data;
+        console.log(responseError);
+
+        if (responseError.type === "error" && responseError.operational) {
+          return errorAlert(responseError.msg);
+        } else {
+          return errorAlert("Something went wrong");
+        }
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        return errorAlert("Something went wrong");
+        console.log(error.request);
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        return errorAlert("Something went wrong");
+        console.log("Error", error.message);
+      }
+      console.log(error.config);
     }
   };
   return (
